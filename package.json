@@ -1,0 +1,13 @@
+{
+  "name": "koa-api",
+  "version": "1.0.0",
+  "description": "koa api",
+  "main": "index.js",
+  "author": "OuyangWenjiao",
+  "license": "ISC",
+  "dependencies": {
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-jsonp": "^2.0.2"
+  }
+}
