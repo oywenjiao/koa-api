@@ -10,6 +10,8 @@
     "jsonwebtoken": "^8.5.1",
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
-    "koa-jsonp": "^2.0.2"
+    "koa-jsonp": "^2.0.2",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.2"
   }
 }

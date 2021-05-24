@@ -26,9 +26,15 @@ exports.schema = async Joi => {
 }
 
 // 处理逻辑
-exports.response = async (Req) => {
+exports.response = async (Req, M) => {
     try {
-        throw '操作错误'
+        const model = new M('user')
+        console.log(model)
+        model.create({
+            phone: Req.phone,
+            password: Req.password,
+            create_time: 123243234
+        })
         return Req
     } catch (err) {
         return {error: err}

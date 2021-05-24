@@ -4,6 +4,7 @@ const Koa = require('koa')
 const bodyParser = require('koa-bodyparser')
 const jsonp = require('koa-jsonp')
 const fs = require('fs')
+const Model = require('./model')
 
 const app = new Koa()
 // 获取body参数
@@ -96,9 +97,11 @@ app.use(async (ctx, next) => {
             app.context.joi = await schema.validateAsync(validate)
             await next()
         } catch (err) {
+            console.log('aaa error', err)
             ctx.body = {
                 code: 406,
-                msg: err.hasOwnProperty('details') ? err.details[0]['message'] : err
+                msg: err.hasOwnProperty('details') ? err.details[0]['message'] : err,
+                response: 'aaa'
             }
         }
     } else {
@@ -112,9 +115,9 @@ app.use(async ctx => {
     if (controller.hasOwnProperty('response')) {
         // 合并数据
         let params = {...ctx.joi, ...ctx.request.body}
-        let result = await controller.response(params)
+        let result = await controller.response(params, await Model())
         if (result.hasOwnProperty('error')) {
-            ctx.body = {code: 406, msg: result.error}
+            ctx.body = {code: 406, msg: result.error, response: result}
         } else {
             ctx.body = {code: 200, msg: 'success', response: result}
         }
