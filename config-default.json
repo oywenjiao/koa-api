@@ -1,0 +1,14 @@
+{
+  "db": {
+    "mysql_db": {
+      "host": "127.0.0.1",
+      "database": "demo",
+      "port": 3306,
+      "username": "root",
+      "password": "root",
+      "dialect": "mysql"
+    }
+  },
+  "port": 3000,
+  "jwt_secret": "koa-api"
+}

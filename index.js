@@ -4,6 +4,12 @@ const Koa = require('koa')
 const bodyParser = require('koa-bodyparser')
 const jsonp = require('koa-jsonp')
 const fs = require('fs')
+
+// 读取配置文件
+const config = fs.readFileSync('config.json')
+global.config = JSON.parse(config)
+
+// 加载model
 const Model = require('./model')
 
 const app = new Koa()
@@ -97,7 +103,6 @@ app.use(async (ctx, next) => {
             app.context.joi = await schema.validateAsync(validate)
             await next()
         } catch (err) {
-            console.log('aaa error', err)
             ctx.body = {
                 code: 406,
                 msg: err.hasOwnProperty('details') ? err.details[0]['message'] : err,
@@ -115,7 +120,7 @@ app.use(async ctx => {
     if (controller.hasOwnProperty('response')) {
         // 合并数据
         let params = {...ctx.joi, ...ctx.request.body}
-        let result = await controller.response(params, await Model())
+        let result = await controller.response(params,  Model())
         if (result.hasOwnProperty('error')) {
             ctx.body = {code: 406, msg: result.error, response: result}
         } else {
@@ -139,4 +144,4 @@ function getStat(filePath) {
     })
 }
 
-app.listen(3000)
+app.listen(global.config.port)
