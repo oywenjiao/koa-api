@@ -11,6 +11,8 @@
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-jsonp": "^2.0.2",
+    "md5": "^2.3.0",
+    "moment": "^2.29.1",
     "mysql2": "^2.2.5",
     "sequelize": "^6.6.2"
   }

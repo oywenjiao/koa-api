@@ -12,6 +12,10 @@ global.config = JSON.parse(config)
 // 加载model
 const Model = require('./model')
 
+// 加载全局助手函数库
+const HELPER = require(process.cwd() + '/src/helper')
+global.HELPER = HELPER
+
 const app = new Koa()
 // 获取body参数
 app.use(bodyParser({enableTypes:['json','form','text']}))
@@ -106,7 +110,6 @@ app.use(async (ctx, next) => {
             ctx.body = {
                 code: 406,
                 msg: err.hasOwnProperty('details') ? err.details[0]['message'] : err,
-                response: 'aaa'
             }
         }
     } else {
@@ -122,7 +125,7 @@ app.use(async ctx => {
         let params = {...ctx.joi, ...ctx.request.body}
         let result = await controller.response(params,  Model())
         if (result.hasOwnProperty('error')) {
-            ctx.body = {code: 406, msg: result.error, response: result}
+            ctx.body = {code: 406, msg: result.error}
         } else {
             ctx.body = {code: 200, msg: 'success', response: result}
         }

@@ -1,5 +1,6 @@
 'use strict'
 
+
 exports.middleware = false
 
 // 参数校验
@@ -27,13 +28,24 @@ exports.schema = async Joi => {
 exports.response = async (Req, M) => {
     try {
         const model = new M('user')
-        return await model.findAll({
+        let user = await model.findOne({
             where: {
-                phone: {
-                    [model.Op.like]: '%' + Req.phone + '%'
-                }
-            }
+                phone: Req.phone
+            },
+            attributes: ['id', 'phone', 'password']
         })
+        if (user === null) {
+            return {error: '用户名错误!'}
+        }
+        // 验证密码是否正确
+        let pwd = global.HELPER.md5(Req.password)
+        if (pwd !== user.password) {
+            return {error: '密码错误!'}
+        }
+        let token = global.HELPER.jwtSign({
+            'user_id': user.id
+        })
+        return {token}
     } catch (err) {
         return {error: err}
     }

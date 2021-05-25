@@ -29,13 +29,21 @@ exports.schema = async Joi => {
 exports.response = async (Req, M) => {
     try {
         const model = new M('user')
-        console.log(model)
+        let user = await model.findOne({
+            where: {
+                phone: Req.phone
+            },
+            attributes: ['id']
+        })
+        if (user !== null) {
+            return {error: '该手机号已存在!'}
+        }
         model.create({
             phone: Req.phone,
-            password: Req.password,
-            create_time: 123243234
+            password: global.HELPER.md5(Req.password),
+            create_time: global.HELPER.getTimestamp()
         })
-        return Req
+        return {}
     } catch (err) {
         return {error: err}
     }
